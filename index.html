@@ -94,6 +94,8 @@ footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font
 .sitenav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:5px 12px;border-radius:999px}
 .sitenav a[aria-current]{background:var(--navy);border-color:var(--navy);color:var(--surface)}
 .sitenav a:hover,.sitenav a:focus-visible{border-color:var(--brass);outline:none}
+.comments-box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;min-height:120px}
+.comments-box .utterances{max-width:100%}
 </style>
 
 </head>
@@ -137,6 +139,12 @@ footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font
           <li><a href="#scene3">3 · Settling in</a></li>
           <li><a href="#scene4">4 · Calls on the patio</a></li>
           <li><a href="#scene5">5 · Adam comes back</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#comments">Comments</a></li>
         </ul>
       </div>
     </nav>
@@ -432,6 +440,28 @@ Audio: footsteps, sofa settling, mug lifted. No music.
 No subtitles, no on-screen text, no logos, phone screen not readable.</pre>
         </article>
       </section>
+
+      <section class="part" id="comments">
+
+        <div class="part-head">
+
+          <span class="tag">Comments</span>
+
+          <h2>Leave a comment</h2>
+
+          <p>Share feedback, ask a question or post what you made with these prompts. Sign in with a free GitHub account to comment.</p>
+
+        </div>
+
+        <div class="comments-box">
+
+          <script src="https://utteranc.es/client.js" repo="ubokudom/ad-prompt-library" issue-term="pathname" label="comments" theme="preferred-color-scheme" crossorigin="anonymous" async></script>
+
+        </div>
+
+      </section>
+
+      
 
       <footer>Proud to Be Me Works · proudtobemeworks.com · VA ad production pack</footer>
     </main>
