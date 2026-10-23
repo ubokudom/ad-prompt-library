@@ -104,6 +104,11 @@ footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font
 .field input:focus,.field textarea:focus{outline:2px solid var(--brass);outline-offset:0;border-color:transparent}
 .steps{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
 .steps b{color:var(--navy);font-weight:500}
+figure.ref{margin:0;display:grid;gap:8px}
+figure.ref img{width:100%;max-width:100%;border-radius:6px;border:1px solid var(--line);display:block}
+figure.ref figcaption{font-size:13px;color:var(--muted)}
+.jump{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px}
+.jump a{color:var(--navy);font-weight:600}
 </style>
 <div class="wrap">
   <header class="hero">
@@ -115,6 +120,7 @@ footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font
     <div class="eyebrow">ChatGPT · Claude · Gemini · Master prompt</div>
     <h1>Cinematic advert <span>storyline generator</span></h1>
     <p class="lede">A reusable master prompt that turns any business into a scene-by-scene animated advert script, with characters, dialogue, on-screen text, sound design and AI production notes. Fill in the business details below, copy, and paste into ChatGPT.</p>
+    <div class="jump"><a href="#builder">Advert master prompt</a><a href="#story">Story script + character sheets</a></div>
     <div class="steps"><span><b>Problem</b></span>→<span><b>Pressure</b></span>→<span><b>Discovery</b></span>→<span><b>Relief</b></span>→<span><b>Transformation</b></span>→<span><b>Action</b></span></div>
   </header>
 
@@ -416,6 +422,103 @@ Now analyse the business information and create the strongest possible animated 
 </pre>
       </article>
     </section>
+    <section class="part" id="story">
+      <div class="part-head">
+        <span class="tag">Story prompt</span>
+        <h2>Story script + character sheets</h2>
+        <p>Turns your rough story ideas into a full scene-by-scene script, with a photorealistic three-panel character sheet prompt for every character. Attach the reference image below in ChatGPT along with the prompt.</p>
+      </div>
+      <figure class="ref">
+        <img src="reference-sheet.png" alt="Reference character sheet: close-up portrait with bandana and tinted glasses, headless front view in white T-shirt and olive trousers, and back view, on a grey studio backdrop" loading="lazy">
+        <figcaption>Character sheet reference: close-up, headless front view, back view on a grey studio backdrop.</figcaption>
+      </figure>
+      <article class="prompt">
+        <div class="prompt-top">
+          <div class="prompt-title"><strong>Story script + character sheet prompt</strong><small>Paste into ChatGPT, attach the reference image, add your ideas under MY IDEAS</small></div>
+          <button class="copy" type="button">Copy prompt</button>
+        </div>
+<pre>Act as an award-winning screenwriter, film director and character designer who writes short cinematic stories for AI video.
+
+I will give you my rough ideas for a story. They may be messy, incomplete or written in note form. Turn them into a clear, vivid scene-by-scene story script, plus a photorealistic character sheet prompt for every character, in EXACTLY the format below.
+
+RULES
+- Keep my characters, events, setting and ending as I describe them. You may add small details that make scenes feel real (props, weather, gestures, sounds), but don&#x27;t change what happens or add new main characters.
+- If something essential is missing (who the main character is, where it happens, or how it ends), ask me up to 5 short questions first, then write everything after I answer.
+- Show, don&#x27;t tell. Describe what the viewer actually sees and hears: actions, expressions, hands, objects, light, sound. Never write vague lines like &quot;she feels sad&quot;; show the tear, the pause, the unfinished cup of tea.
+- Every scene must move the story forward or deepen the emotion. No filler.
+- Dialogue must sound like real people talking: short, natural, sometimes unfinished. Use voice-over only where it adds something the visuals can&#x27;t.
+- Give the story a clear emotional journey with a beginning, a turning point and a satisfying ending.
+- Every character must look exactly the same in every scene: same face, hair, clothing, shoes and accessories. Choose specific, memorable details (colours, fabrics, one signature accessory) so each character is easy to recognise.
+- Use British English unless I say otherwise.
+- Default length 60–90 seconds, vertical 9:16, 5–8 scenes, unless my ideas say otherwise.
+
+OUTPUT FORMAT (follow exactly, plain text, no tables)
+
+[STORY TITLE IN CAPITALS]
+SHORT FILM — SCENE-BY-SCENE STORY SCRIPT
+[Emotional journey in 3–5 words with arrows, e.g. Loneliness → Connection → Hope]
+
+Story Overview
+Logline: [one sentence: who, what they want, what stands in the way]
+Suggested length: [seconds]
+Format: [aspect ratio and where it will be watched]
+Genre and style: [e.g. warm family drama, cinematic, photorealistic, gentle and slow]
+Theme: [what the story is really about, in one short line]
+Setting: [place, era, season, time of day]
+
+Characters
+[Name] — [role in the story, age, personality, what they want]
+[Repeat for each character.]
+
+CHARACTER SHEETS
+Write one complete, copy-ready image prompt for EACH character (babies, children and pets included). Every prompt must start with this exact layout block, then add the character&#x27;s details:
+
+&quot;Three-panel photographic character reference sheet, horizontal 16:9, three equal panels side by side separated by thin white dividers. Background in all three panels: seamless plain medium-grey studio backdrop, cool neutral grey (around #8E9196), smooth matte paper sweep, very subtle soft vignette, faint soft floor shadow at the feet, no props, no texture. Soft diffused frontal studio lighting, even exposure. Same person in all three panels.
+Panel 1 (left): tight close-up portrait from the chest up, facing the camera straight on, showing the face, hair, facial hair, accessories and the neckline of the top in sharp detail, shot on an 85mm lens.
+Panel 2 (middle): full-body front view, standing straight with arms relaxed at the sides, head cropped out at the neck so no face is visible, showing the full outfit down to the shoes.
+Panel 3 (right): full-body back view of the same person including the back of the head and hair, same standing pose, showing how hair and accessories look from behind.
+Photorealistic photograph of a real person, natural skin texture with visible pores and small imperfections, true-to-life colours, fashion lookbook turnaround style. Not illustration, not cartoon, not 3D render, not CGI, no text, no labels, no logos.&quot;
+
+Then, for each character, add:
+The person: [ethnicity/nationality, exact age, height, build, skin tone, eye colour, face shape and features, hair colour, texture, length and style, facial hair, makeup, any marks or freckles]
+Accessories: [glasses, headwear, jewellery, watch, bag; say exactly where each sits]
+Outfit: [top, layers, bottoms, shoes, with exact colours, fabrics and fit]
+From behind: [how the hair, headwear knot, bag strap or other details look in the back view]
+Expression in the close-up: [one short phrase matching their personality]
+
+For a baby, toddler or pet that can&#x27;t stand, adapt the panels: Panel 1 close-up of the face, Panel 2 full body from above or held/sitting with the face still cropped out where possible, Panel 3 side or back view.
+
+SCENE 1 — [SHORT TITLE IN CAPITALS]
+Location: [exact place, time of day, light and weather]
+Characters in scene: [names, matching their character sheets]
+Visual: [The opening image. What the camera sees first and how the scene is framed.]
+[Short lines describing each action beat in order, one per line: movements, expressions, objects, sounds.]
+[Any dialogue, written as: NAME (how they say it): &quot;line&quot;]
+[Voice-over, only if needed: Voice-over: &quot;line&quot;]
+[The moment or action that leads into the next scene.]
+
+[Repeat for every scene.]
+
+FINAL SCENE — [SHORT TITLE IN CAPITALS]
+Location: [place, time, light]
+Characters in scene: [names]
+Visual: [the closing image the audience will remember]
+[Action beats, one per line]
+[Final line of dialogue or voice-over, if any]
+[How the film ends: hold on a face, fade to black, a sound, a title, etc.]
+
+Creative Direction for Production
+[5–7 short lines covering: the overall mood and colour palette, how the light and colours change as the emotion changes, camera style, pacing, music and sound, and the one moment that must land emotionally.]
+
+Scene Checklist
+[For each scene, one line: scene number — characters in it (attach their character sheets) — location — props that must stay the same — any text or titles to add in editing rather than generate with AI.]
+
+MY IDEAS
+[Paste your rough story ideas here: who it&#x27;s about, what happens, how it starts and ends, the feeling you want, and any lines you already have in mind.]</pre>
+      </article>
+      <p class="note"><b>How to use:</b> 1. Paste the prompt, attach the reference image and add your ideas. 2. Generate each character sheet prompt in ChatGPT images or Nano Banana until it looks right. 3. Attach the sheets for the characters in each scene when you make the video. If the middle panel keeps a head, add "neck-down crop, no face visible in the middle panel".</p>
+    </section>
+
     <footer>Ad prompt library · ChatGPT master prompt</footer>
   </main>
 </div>
