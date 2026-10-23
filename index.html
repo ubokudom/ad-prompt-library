@@ -89,10 +89,21 @@ footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font
 </style>
 
 <style>body{margin:0}</style>
+<style>
+.sitenav{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--f-mono);font-size:12.5px}
+.sitenav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+.sitenav a[aria-current]{background:var(--navy);border-color:var(--navy);color:var(--surface)}
+.sitenav a:hover,.sitenav a:focus-visible{border-color:var(--brass);outline:none}
+</style>
+
 </head>
 <body>
 <div class="wrap">
   <header class="hero">
+    <nav class="sitenav" aria-label="Pages">
+      <a href="./" aria-current="page">David, Clara &amp; Lily ad</a>
+      <a href="./remote-talent-hub.html">Remote Talent Hub ad</a>
+    </nav>
     <div class="eyebrow">Google Flow · Veo 3.1 · Prompt library</div>
     <h1>The David, Clara &amp; Lily <span>ad prompts</span></h1>
     <p class="lede">Every prompt used for the Proud to Be Me Works virtual-assistant ad: the three-panel character sheet layout, the five cast sheets, and the shot prompts for Scenes 1 to 5. Tap Copy on any card and paste it straight into your generator.</p>

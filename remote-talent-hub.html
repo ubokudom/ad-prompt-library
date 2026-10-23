@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Remote Talent Hub Prompts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a film-production call sheet. Studio-grey ground (the character-sheet backdrop), navy front-door accent, brass highlights. Left rail index on desktop, stacked on phone. */
+:root{
+  --bg:#E9ECEF;          /* studio backdrop grey, cool */
+  --surface:#F7F8F9;
+  --ink:#16202F;
+  --muted:#5A6576;
+  --line:#CDD3DA;
+  --navy:#1F2A44;        /* the front door */
+  --brass:#A77A2B;
+  --code-bg:#FFFFFF;
+  --chip:#DDE3EA;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+
+header.hero{display:grid;gap:18px;padding-bottom:32px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,64px);line-height:1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 span{color:var(--navy)}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+.slate{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.slate b{color:var(--ink);font-weight:500}
+
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;margin-top:36px}
+nav.index{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;display:grid;gap:22px;font-size:14px}
+nav.index h4{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
+nav.index ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+nav.index a{color:var(--ink);text-decoration:none;display:block;padding:3px 0 3px 10px;border-left:2px solid transparent}
+nav.index a:hover,nav.index a:focus-visible{border-left-color:var(--brass);outline:none}
+
+section.part{display:grid;gap:22px;margin-bottom:56px}
+.part-head{display:grid;gap:6px}
+.part-head .tag{font-family:var(--f-mono);font-size:12px;color:var(--brass);letter-spacing:.1em;text-transform:uppercase}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,3.6vw,38px);margin:0;letter-spacing:-.01em}
+.part-head p{margin:0;color:var(--muted);max-width:66ch}
+
+h3.scene{font-family:var(--f-display);font-weight:700;font-size:20px;margin:18px 0 0;display:flex;gap:12px;align-items:baseline}
+h3.scene .n{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--surface);background:var(--navy);padding:3px 8px;border-radius:3px}
+
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.prompt-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.prompt-title{display:grid;gap:2px;min-width:0}
+.prompt-title strong{font-family:var(--f-display);font-weight:700;font-size:17px}
+.prompt-title small{color:var(--muted);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-family:var(--f-mono);font-size:11px;background:var(--chip);color:var(--ink);padding:2px 8px;border-radius:999px}
+button.copy{font-family:var(--f-mono);font-size:12.5px;font-weight:500;border:1.5px solid var(--navy);background:transparent;color:var(--navy);padding:7px 14px;border-radius:4px;cursor:pointer;white-space:nowrap}
+button.copy:hover{background:var(--navy);color:var(--surface)}
+button.copy:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+button.copy.done{background:var(--brass);border-color:var(--brass);color:var(--surface)}
+pre{margin:0;padding:16px;background:var(--code-bg);font-family:var(--f-mono);font-size:12.8px;line-height:1.65;white-space:pre-wrap;word-wrap:break-word;max-height:420px;overflow:auto;color:var(--ink)}
+.prompt.open pre{max-height:none}
+.expand{display:block;width:100%;border:0;border-top:1px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--f-mono);font-size:12px;padding:8px;cursor:pointer}
+.expand:focus-visible{outline:2px solid var(--brass)}
+
+.note{border-left:3px solid var(--brass);padding:10px 14px;background:var(--surface);color:var(--muted);font-size:14px;max-width:72ch}
+.note b{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13px;font-family:var(--f-mono)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:24px}
+  nav.index{position:static;grid-template-columns:1fr 1fr;gap:16px}
+}
+@media (max-width:460px){ nav.index{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<style>
+.sitenav{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--f-mono);font-size:12.5px}
+.sitenav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+.sitenav a[aria-current]{background:var(--navy);border-color:var(--navy);color:var(--surface)}
+.sitenav a:hover,.sitenav a:focus-visible{border-color:var(--brass);outline:none}
+figure.ref{margin:0;display:grid;gap:8px}
+figure.ref img{width:100%;max-width:100%;border-radius:6px;border:1px solid var(--line);display:block}
+figure.ref figcaption{font-size:13px;color:var(--muted)}
+.script{display:grid;gap:14px}
+.beat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;display:grid;gap:8px}
+.beat h4{margin:0;font-family:var(--f-display);font-size:17px}
+.beat p{margin:0;max-width:72ch}
+.beat ul{margin:0;padding-left:20px;display:grid;gap:2px;font-size:14px}
+.vo{font-style:italic;color:var(--navy)}
+.price{font-family:var(--f-mono);font-size:12.5px;color:var(--brass);font-weight:500}
+.loc{font-size:14px;color:var(--muted);max-width:72ch;margin:0}
+.loc b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <nav class="sitenav" aria-label="Pages">
+      <a href="./">David, Clara &amp; Lily ad</a>
+      <a href="./remote-talent-hub.html" aria-current="page">Remote Talent Hub ad</a>
+    </nav>
+    <div class="eyebrow">Nano Banana · ChatGPT · Google Flow · Prompt library</div>
+    <h1>Remote Talent Hub <span>advert prompts</span></h1>
+    <p class="lede">The full script for the ProudToBeMe Remote Talent Hub paid advert, the request that started it, the three-panel character sheets for Sophie, Callum and Ellie, and a location and image prompt for every scene.</p>
+    <div class="slate">
+      <span>Length <b>60–90 s</b></span>
+      <span>Format <b>Vertical 9:16</b></span>
+      <span>Setting <b>London, UK</b></span>
+      <span>Arc <b>Overwhelm → Discovery → Relief → Transformation</b></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="index" aria-label="Contents">
+      <div>
+        <h4>Brief</h4>
+        <ul>
+          <li><a href="#request">The request</a></li>
+          <li><a href="#script">Advert script</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Character sheets</h4>
+        <ul>
+          <li><a href="#layout">Three-panel layout</a></li>
+          <li><a href="#sophie">Sophie Hart</a></li>
+          <li><a href="#callum">Callum Reid</a></li>
+          <li><a href="#ellie">Ellie Marsh</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Scenes</h4>
+        <ul>
+          <li><a href="#style">Style line</a></li>
+          <li><a href="#s1">1 · The overwhelm</a></li>
+          <li><a href="#s2">2 · She finds ProudToBeMe</a></li>
+          <li><a href="#s3">3 · The cinematographer</a></li>
+          <li><a href="#s4">4 · The creative owner</a></li>
+          <li><a href="#s5">5 · The business grows</a></li>
+          <li><a href="#s6">6 · The transformation</a></li>
+          <li><a href="#s7">Final scene</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <!-- REQUEST -->
+      <section class="part" id="request">
+        <div class="part-head">
+          <span class="tag">Part one</span>
+          <h2>The request</h2>
+          <p>The prompt sent with the script, plus the reference sheet every character sheet copies.</p>
+        </div>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Original prompt</strong><small>Sent with the script and the reference image</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>I want a detailed description of character and the location for every scene in this story, i want the character sheet to look like the character sheet attached with 3 panels one close up, no head on the second panel, and a backview, i want the images to be like a real person not cartoon not 3d animation. ask me any question to make this perfect</pre>
+        </article>
+        <figure class="ref">
+          <img src="reference-sheet.png" alt="Reference character sheet: close-up portrait with bandana and tinted glasses, headless front view in white T-shirt and olive trousers, and back view, all on a grey studio backdrop" loading="lazy">
+          <figcaption>Reference layout: close-up, headless front view, back view on a grey studio backdrop.</figcaption>
+        </figure>
+        <p class="note"><b>Answers given:</b> three white British characters, real London locations, made with ChatGPT and Nano Banana for images and Google Flow for video.</p>
+      </section>
+
+      <!-- SCRIPT -->
+      <section class="part" id="script">
+        <div class="part-head">
+          <span class="tag">Part two</span>
+          <h2>Advert script</h2>
+          <p>ProudToBeMe Remote Talent Hub, paid advert. Core message: your business needs support, not more work.</p>
+        </div>
+        <div class="script">
+          <div class="beat">
+            <h4>Scene 1 · The overwhelm</h4>
+            <p>A female founder sits at her desk late in the evening, laptop open, papers everywhere, planning the launch of her new tech company. She writes: Website. Marketing. Admin. Research. Customer enquiries. She calculates the costs: £800… £1,500… £2,000… The total reaches <b>£30,000+</b>. She leans back, overwhelmed, then picks up her phone and scrolls.</p>
+            <p class="vo">VO: "She had the vision. She had the business plan. But every new task seemed to come with another cost."</p>
+          </div>
+          <div class="beat">
+            <h4>Scene 2 · She finds ProudToBeMe</h4>
+            <p>She sees ProudToBeMe Remote Talent Hub on her phone and clicks. The services appear:</p>
+            <ul><li>Email &amp; Calendar Management</li><li>Inbox Organisation &amp; Response</li><li>Scheduling &amp; Appointments</li><li>Travel Bookings &amp; Itinerary Management</li><li>Data Entry &amp; CRM Updates</li><li>Online Research</li><li>File &amp; Cloud Organisation</li></ul>
+            <p class="price">£850 / MONTH · Up to 20 hours of admin support</p>
+            <p>She smiles.</p>
+            <p class="vo">VO: "Then she discovered she didn't need to build an entire team. She could simply get the support she needed."</p>
+          </div>
+          <div class="beat">
+            <h4>Scene 3 · The cinematographer</h4>
+            <p>A male cinematographer films at an event when his phone starts buzzing. Email after email. His calendar is full, a travel booking is pending and files are scattered across his laptop. His inbox shows <b>47 UNREAD EMAILS</b>. He sighs.</p>
+            <p class="vo">VO: "For him, the problem wasn't finding clients. It was keeping up with everything happening behind the scenes."</p>
+            <p>He discovers ProudToBeMe and the £850/month Basic Plan. The services animate on:</p>
+            <ul><li>Email &amp; Calendar Management</li><li>Inbox Organisation &amp; Response</li><li>Travel Bookings &amp; Itinerary Management</li><li>Data Entry &amp; CRM Updates</li><li>Online Research</li><li>Document Formatting</li><li>File &amp; Cloud Organisation</li><li>Up to 20 Hours of Admin Support</li></ul>
+            <p>He clicks <b>GET STARTED</b>.</p>
+          </div>
+          <div class="beat">
+            <h4>Scene 4 · The creative business owner</h4>
+            <p>A creative and events business owner tries to run everything herself. Her screen shows: Social Media, behind schedule; Newsletter, not sent; Content, unfinished; Monthly report, pending. She makes a graphic, sees it looks poor, deletes it and sighs. Then she sees the Standard Plan:</p>
+            <ul><li>Everything in Basic Plan</li><li>Social Media Management (2 Platforms)</li><li>Content Creation (8 Posts/Month)</li><li>Post Scheduling &amp; Engagement</li><li>Monthly Newsletter Creation &amp; Send</li><li>Basic Graphic Design (3 Posts/Month)</li><li>Monthly Performance Report</li><li>Up to 60 Hours of Support</li></ul>
+            <p class="price">£4,999 · Standard Plan</p>
+            <p>Her face lights up.</p>
+            <p class="vo">VO: "And when the business needs more than administration, there is room to grow."</p>
+          </div>
+          <div class="beat">
+            <h4>Scene 5 · The business grows</h4>
+            <p>A fast montage. The creative's social media is managed, posts are scheduled, a newsletter goes out and a report is generated. The founder receives an organised inbox. The cinematographer sees: TRAVEL BOOKED ✓ / FILES ORGANISED ✓ / CLIENT EMAILS RESPONDED ✓. Then the Premium package appears:</p>
+            <ul><li>Everything in Standard Plan</li><li>Advanced Social Media Management (3–4 Platforms)</li><li>Content Creation (12–16 Posts/Month)</li><li>Paid Ad Management &amp; Reporting</li><li>Website Updates &amp; Maintenance</li><li>Lead Generation Support</li><li>Advanced Reporting &amp; Insights</li><li>Up to 100 Hours of Support</li></ul>
+            <p class="price">£8,999 · Premium Plan</p>
+            <p class="vo">VO: "And for businesses ready for more comprehensive support, Premium brings marketing, content, advertising, websites, lead generation and reporting together."</p>
+          </div>
+          <div class="beat">
+            <h4>Scene 6 · The transformation</h4>
+            <p>Split screen. <b>Before:</b> the founder overwhelmed; the cinematographer with 47 unread emails; the creative with everything overdue. The screen flashes. <b>After:</b> the founder focused on growing her company; the cinematographer on his next production; the creative on her customers and events. All three are calm, productive and working.</p>
+          </div>
+          <div class="beat">
+            <h4>Final scene · End card</h4>
+            <p>Clean white and purple ProudToBeMe screen: <b>YOUR BUSINESS NEEDS SUPPORT. NOT MORE WORK.</b> PROUDTOBEME REMOTE TALENT HUB · ADMIN • MARKETING • BRANDING • WEB • CRM.</p>
+            <p class="price">£850 / MONTH | £4,999 | £8,999</p>
+            <p>FIND THE SUPPORT THAT FITS YOUR BUSINESS. Visit the website → Explore the brochure → Get started →</p>
+            <p class="vo">VO: "You focus on the business. We help manage the work."</p>
+          </div>
+          <p class="note"><b>Creative direction:</b> the narrator doesn't read every service; the visuals carry the package details. Keep transitions fast for paid social, but leave time to read the prices. End with a clear call to action to the VA landing page.</p>
+        </div>
+      </section>
+
+      <!-- CHARACTER SHEETS -->
+      <section class="part" id="sheets">
+        <div class="part-head">
+          <span class="tag">Part three</span>
+          <h2>Character sheets</h2>
+          <p>Make each sheet first in Nano Banana or ChatGPT, then upload it as a reference (an Ingredient in Flow) every time that character appears. Paste the layout block in place of [LAYOUT BLOCK ABOVE].</p>
+        </div>
+
+        <article class="prompt" id="layout">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Layout block</strong><small>Starts every character sheet prompt</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>A three-panel photographic character reference sheet, horizontal 16:9 format, all three panels on a seamless mid-grey studio backdrop with soft, even studio lighting and a light floor shadow.
+Panel 1 (left): tight close-up portrait of the face and upper shoulders, looking straight into the camera, neutral relaxed expression, shot on an 85mm lens, sharp focus on the eyes.
+Panel 2 (middle): full-body front view, standing straight with arms relaxed at the sides, cropped at the neck so the head is completely out of frame, showing the full outfit and shoes.
+Panel 3 (right): full-body back view of the same person including the back of the head, same standing pose.
+Photorealistic photograph of a real person, natural skin texture with visible pores and small imperfections, true-to-life colours, editorial fashion lookbook style. Not illustration, not cartoon, not 3D render, not CGI, no text, no labels.</pre>
+        </article>
+
+        <article class="prompt" id="sophie">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Sophie Hart</strong><small>The founder · 32</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>[LAYOUT BLOCK ABOVE]
+The person: a white British woman aged 32, slim build, around 5'6". Shoulder-length wavy light-brown hair with natural chestnut tones, side parting, one side tucked behind her ear. Hazel eyes, light freckles across her nose and cheeks, defined eyebrows, minimal natural makeup, soft pink lips. Small gold hoop earrings and a fine gold chain necklace.
+Outfit: oversized cream ribbed knit jumper with the front loosely tucked in, high-waisted black tailored straight-leg trousers, clean white leather trainers. A thin silver watch on her left wrist.
+Personality to show in the portrait: intelligent, driven, slightly tired but determined.</pre>
+        </article>
+
+        <article class="prompt" id="callum">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Callum Reid</strong><small>The cinematographer · 36</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>[LAYOUT BLOCK ABOVE]
+The person: a white British man aged 36, athletic build, around 6'0". Short, slightly messy dark-brown hair, fuller on top with shorter sides. Short stubble beard, blue-grey eyes, faint crow's feet, slightly weathered outdoor complexion.
+Outfit: plain black crew-neck t-shirt, olive-green utility vest with multiple chest pockets, charcoal-grey cargo trousers, black leather lace-up work boots. Black over-ear wireless headphones resting around his neck, a black smartwatch on his left wrist, a black camera strap over one shoulder.
+Personality to show in the portrait: focused, capable, hard-working, a little stretched thin.</pre>
+        </article>
+
+        <article class="prompt" id="ellie">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Ellie Marsh</strong><small>The creative business owner · 28</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>[LAYOUT BLOCK ABOVE]
+The person: a white British woman aged 28, medium build, around 5'5". Long copper-red hair worn in a loose low bun with soft face-framing strands. Green eyes, light freckles, rosy cheeks, warm natural makeup with a terracotta lip. Gold statement hoop earrings and layered thin gold necklaces.
+Outfit: a flowing terracotta and mustard floral-print blouse with puff sleeves, wide-leg cream linen trousers, tan leather loafers. A stack of thin gold bangles on one wrist.
+Personality to show in the portrait: warm, creative, sociable, bright energy.</pre>
+        </article>
+
+        <p class="note"><b>Continuity:</b> keep Sophie's cream jumper, Callum's olive vest and Ellie's floral blouse in every scene. They're how viewers tell the three apart in the fast montage. If a face changes, regenerate with the character sheet attached again.</p>
+      </section>
+
+      <!-- SCENES -->
+      <section class="part" id="scenes">
+        <div class="part-head">
+          <span class="tag">Part four</span>
+          <h2>Scene prompts</h2>
+          <p>Every scene prompt ends with the style line. Paste it in place of [STYLE LINE]. Add website screens, prices, checkmarks and the logo in your editor, since AI tools often misspell text.</p>
+        </div>
+
+        <article class="prompt" id="style">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Style line</strong><small>Ends every scene prompt</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Vertical 9:16 frame, photorealistic cinematic film still, shot on an ARRI Alexa with a 35mm lens, shallow depth of field, natural film grain, realistic skin texture, cohesive colour grade with soft purple and warm amber tones. Not illustration, not 3D, not cartoon.</pre>
+        </article>
+
+        <h3 class="scene" id="s1"><span class="n">Scene 1</span>The overwhelm</h3>
+        <p class="loc"><b>Location:</b> a small second bedroom used as a home office in a Victorian terraced flat in Hackney, East London, at 11pm. Rain streaks the sash window, with orange streetlights and wet brick terraces outside. White desk, cork board with sticky notes, a cold half-drunk mug of tea and a small desk plant.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Sophie at her desk</strong><div class="chips"><span class="chip">Sophie Hart</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Sophie Hart (same face, hair and outfit, sleeves of her cream jumper pushed up, hair slightly messier than usual): Sophie sits at a cluttered white desk late at night, open laptop glowing, papers, receipts and a notebook spread everywhere, writing a list with a pen. A warm desk lamp is the only light source, mixed with cool blue laptop glow and orange streetlight through a rain-covered sash window behind her. She leans back in her chair, hand pressed to her forehead, looking overwhelmed at the notebook. [STYLE LINE]</pre>
+        </article>
+        <p class="note"><b>Motion for Flow:</b> slow push-in on her face as she leans back and exhales, then she reaches for her phone and scrolls, her face lit by the screen.</p>
+
+        <h3 class="scene" id="s2"><span class="n">Scene 2</span>She finds ProudToBeMe</h3>
+        <p class="loc"><b>Location:</b> the same Hackney home office a few minutes later, same lighting and rain.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Sophie discovers the site</strong><div class="chips"><span class="chip">Sophie Hart</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Sophie Hart: close-up over-the-shoulder shot of Sophie holding her smartphone, the screen glow lighting her face, her expression shifting from tired to curious. Then a medium close-up as a genuine, relieved smile spreads across her face. Desk lamp light, rain on the window softly out of focus behind her. Phone screen is blank bright white (to be replaced in editing). [STYLE LINE]</pre>
+        </article>
+        <p class="note"><b>Editing:</b> add the website, the service list and "£850 / MONTH" over the phone screen.</p>
+
+        <h3 class="scene" id="s3"><span class="n">Scene 3</span>The cinematographer</h3>
+        <p class="loc"><b>Location 1:</b> an evening corporate launch in a converted brick warehouse in Shoreditch, with exposed brick, steel beams, warm festoon lights, guests mingling in soft focus and a speaker at a lectern. <b>Location 2:</b> a quiet corner by the equipment cases, his open laptop on a flight case with a cluttered desktop.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Filming, phone buzzing</strong><div class="chips"><span class="chip">Callum Reid</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Callum Reid: Callum films the event with a professional cinema camera on a shoulder rig, eye pressed to the viewfinder, guests and festoon lights blurred in the background. His phone buzzes repeatedly in his vest pocket; he lowers the camera, pulls out the phone and frowns at the screen. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Overwhelmed by the flight case</strong><div class="chips"><span class="chip">Callum Reid</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Callum Reid: Callum stands beside a black equipment flight case at the edge of the warehouse venue, camera rested on the case, scrolling his phone with one hand, his open laptop next to him showing a cluttered desktop. He sighs heavily, shoulders dropping, rubbing the back of his neck. Moody low light, festoon bulbs bokeh behind him. Phone screen blank bright white. [STYLE LINE]</pre>
+        </article>
+        <p class="note"><b>Motion for Flow:</b> handheld feel while filming, then the camera settles as he sighs. End on his thumb tapping the phone; add "GET STARTED" in editing.</p>
+
+        <h3 class="scene" id="s4"><span class="n">Scene 4</span>The creative business owner</h3>
+        <p class="loc"><b>Location:</b> Ellie's events and creative studio in a railway arch in Peckham, South London, mid-afternoon, daylight through a large arched window. Mood boards with fabric swatches and flower photos, dried flowers, ribbon rolls, a rail of table linens and stacked event props around a big wooden worktable with a laptop and ring light.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Disappointed at the laptop</strong><div class="chips"><span class="chip">Ellie Marsh</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Ellie Marsh: Ellie sits at a busy wooden worktable in a railway-arch creative studio, surrounded by mood boards, fabric swatches, dried flowers and event props. She stares at her laptop screen with a disappointed expression, lips pressed together, then exhales and slumps slightly. Warm afternoon daylight from a large arched window, soft natural light. Laptop screen blank bright white. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Her face lights up</strong><div class="chips"><span class="chip">Ellie Marsh</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Ellie Marsh: close-up of Ellie looking at her phone, her face lighting up with surprise and excitement, a wide hopeful smile, hand raised slightly to her chest. Same railway-arch studio softly blurred behind her. Phone screen blank bright white. [STYLE LINE]</pre>
+        </article>
+        <p class="note"><b>Editing:</b> show the overdue task list and the poor graphic on her laptop, then the £4,999 Standard Plan on her phone.</p>
+
+        <h3 class="scene" id="s5"><span class="n">Scene 5</span>The business grows</h3>
+        <p class="loc"><b>Montage:</b> quick, bright daytime moments. The grade turns warmer and lighter to show relief.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Ellie, tidy studio</strong><div class="chips"><span class="chip">Ellie Marsh</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Ellie Marsh: Ellie in her railway-arch studio in bright morning light, relaxed and smiling, sipping a coffee while glancing at her laptop, her worktable now tidy and organised. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Sophie, Clerkenwell café</strong><div class="chips"><span class="chip">Sophie Hart</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Sophie Hart: Sophie at a sunny café window table in Clerkenwell, London, laptop open, calmly reading her screen with a satisfied half-smile, a flat white beside her, a red London bus soft-focus outside the window. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Callum, King's Cross</strong><div class="chips"><span class="chip">Callum Reid</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Callum Reid: Callum on the platform at King's Cross station, camera bag over his shoulder and a rolling equipment case beside him, checking his phone and giving a small relieved nod, morning light through the station's arched roof. [STYLE LINE]</pre>
+        </article>
+        <p class="note"><b>Editing:</b> add the checkmarks, scheduled posts, newsletter send and the £8,999 Premium package as graphics over these shots.</p>
+
+        <h3 class="scene" id="s6"><span class="n">Scene 6</span>The transformation</h3>
+        <p class="loc"><b>Split screen:</b> reuse the Scene 1, 3 and 4 images for BEFORE. Generate the three AFTER shots below, then build the split in your editor.</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>After · Sophie presenting</strong><div class="chips"><span class="chip">Sophie Hart</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Sophie Hart: Sophie standing confidently in a bright modern glass meeting room in a London co-working space, presenting to two colleagues in front of a whiteboard, mid-sentence, energised and composed. City rooftops visible through floor-to-ceiling windows. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>After · Callum on the South Bank</strong><div class="chips"><span class="chip">Callum Reid</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Callum Reid: Callum on location on the South Bank by the River Thames at golden hour, filming a model with his cinema camera, relaxed and fully absorbed in his work, Tower Bridge softly blurred in the background. [STYLE LINE]</pre>
+        </article>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>After · Ellie at her event</strong><div class="chips"><span class="chip">Ellie Marsh</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference image of Ellie Marsh: Ellie at a beautifully styled evening event in an elegant London garden venue with floral installations and candlelit tables, warmly greeting smiling guests, wearing an event lanyard, glowing and calm. [STYLE LINE]</pre>
+        </article>
+
+        <h3 class="scene" id="s7"><span class="n">Final</span>End card</h3>
+        <p class="loc"><b>Build in your editor or Canva:</b> clean white background, purple brand accents, tagline, pricing row and call to action. For an optional closing shot of the cast before it:</p>
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Cast line-up</strong><div class="chips"><span class="chip">Sophie Hart</span><span class="chip">Callum Reid</span><span class="chip">Ellie Marsh</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Using the reference images of Sophie Hart, Callum Reid and Ellie Marsh: the three standing side by side in a bright, minimal white studio with soft purple accent lighting, relaxed confident smiles, looking at camera. [STYLE LINE]</pre>
+        </article>
+      </section>
+
+      <footer>ProudToBeMe Remote Talent Hub · paid advert production prompts</footer>
+    </main>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.prompt').forEach(function(card){
+  var pre = card.querySelector('pre');
+  var btn = card.querySelector('button.copy');
+  btn.addEventListener('click', function(){
+    var text = pre.textContent;
+    var ok = function(){ btn.textContent='Copied'; btn.classList.add('done'); setTimeout(function(){btn.textContent='Copy prompt';btn.classList.remove('done');},1800); };
+    var fallback = function(){
+      var r=document.createRange(); r.selectNodeContents(pre);
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent='Selected, press Ctrl+C';
+      setTimeout(function(){btn.textContent='Copy prompt';},2500);
+    };
+    try{ navigator.clipboard.writeText(text).then(ok, fallback); }catch(e){ fallback(); }
+  });
+  if (pre.scrollHeight > 440){
+    var ex=document.createElement('button'); ex.type='button'; ex.className='expand'; ex.textContent='Show full prompt';
+    ex.addEventListener('click',function(){ var o=card.classList.toggle('open'); ex.textContent=o?'Collapse':'Show full prompt'; });
+    card.appendChild(ex);
+  }
+});
+</script>
+</body>
+</html>

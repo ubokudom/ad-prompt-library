@@ -1,5 +1,6 @@
 # Ad Prompt Library
 
-Copy-ready character sheet and scene prompts for the Proud to Be Me Works VA ad (David, Clara, baby Lily, Adam and Jennifer).
+Copy-ready prompts for ProudToBeMe adverts.
 
-Live site: https://ubokudom.github.io/ad-prompt-library/
+- David, Clara & Lily VA ad: https://ubokudom.github.io/ad-prompt-library/
+- Remote Talent Hub ad: https://ubokudom.github.io/ad-prompt-library/remote-talent-hub.html
