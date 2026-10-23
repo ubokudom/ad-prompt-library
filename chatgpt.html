@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChatGPT Advert Master Prompt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a film-production call sheet. Studio-grey ground (the character-sheet backdrop), navy front-door accent, brass highlights. Left rail index on desktop, stacked on phone. */
+:root{
+  --bg:#E9ECEF;          /* studio backdrop grey, cool */
+  --surface:#F7F8F9;
+  --ink:#16202F;
+  --muted:#5A6576;
+  --line:#CDD3DA;
+  --navy:#1F2A44;        /* the front door */
+  --brass:#A77A2B;
+  --code-bg:#FFFFFF;
+  --chip:#DDE3EA;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+
+header.hero{display:grid;gap:18px;padding-bottom:32px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,64px);line-height:1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 span{color:var(--navy)}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+.slate{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.slate b{color:var(--ink);font-weight:500}
+
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;margin-top:36px}
+nav.index{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;display:grid;gap:22px;font-size:14px}
+nav.index h4{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
+nav.index ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+nav.index a{color:var(--ink);text-decoration:none;display:block;padding:3px 0 3px 10px;border-left:2px solid transparent}
+nav.index a:hover,nav.index a:focus-visible{border-left-color:var(--brass);outline:none}
+
+section.part{display:grid;gap:22px;margin-bottom:56px}
+.part-head{display:grid;gap:6px}
+.part-head .tag{font-family:var(--f-mono);font-size:12px;color:var(--brass);letter-spacing:.1em;text-transform:uppercase}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,3.6vw,38px);margin:0;letter-spacing:-.01em}
+.part-head p{margin:0;color:var(--muted);max-width:66ch}
+
+h3.scene{font-family:var(--f-display);font-weight:700;font-size:20px;margin:18px 0 0;display:flex;gap:12px;align-items:baseline}
+h3.scene .n{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--surface);background:var(--navy);padding:3px 8px;border-radius:3px}
+
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.prompt-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.prompt-title{display:grid;gap:2px;min-width:0}
+.prompt-title strong{font-family:var(--f-display);font-weight:700;font-size:17px}
+.prompt-title small{color:var(--muted);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-family:var(--f-mono);font-size:11px;background:var(--chip);color:var(--ink);padding:2px 8px;border-radius:999px}
+button.copy{font-family:var(--f-mono);font-size:12.5px;font-weight:500;border:1.5px solid var(--navy);background:transparent;color:var(--navy);padding:7px 14px;border-radius:4px;cursor:pointer;white-space:nowrap}
+button.copy:hover{background:var(--navy);color:var(--surface)}
+button.copy:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+button.copy.done{background:var(--brass);border-color:var(--brass);color:var(--surface)}
+pre{margin:0;padding:16px;background:var(--code-bg);font-family:var(--f-mono);font-size:12.8px;line-height:1.65;white-space:pre-wrap;word-wrap:break-word;max-height:420px;overflow:auto;color:var(--ink)}
+.prompt.open pre{max-height:none}
+.expand{display:block;width:100%;border:0;border-top:1px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--f-mono);font-size:12px;padding:8px;cursor:pointer}
+.expand:focus-visible{outline:2px solid var(--brass)}
+
+.note{border-left:3px solid var(--brass);padding:10px 14px;background:var(--surface);color:var(--muted);font-size:14px;max-width:72ch}
+.note b{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13px;font-family:var(--f-mono)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:24px}
+  nav.index{position:static;grid-template-columns:1fr 1fr;gap:16px}
+}
+@media (max-width:460px){ nav.index{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<style>
+.sitenav{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--f-mono);font-size:12.5px}
+.sitenav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+.sitenav a[aria-current]{background:var(--navy);border-color:var(--navy);color:var(--surface)}
+.sitenav a:hover,.sitenav a:focus-visible{border-color:var(--brass);outline:none}
+.single{max-width:900px;margin:36px auto 0;display:grid;gap:0}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;padding:18px 16px;background:var(--surface)}
+.field{display:grid;gap:5px;min-width:0}
+.field span{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--code-bg);border:1px solid var(--line);border-radius:4px;padding:8px 10px;width:100%;resize:vertical}
+.field input:focus,.field textarea:focus{outline:2px solid var(--brass);outline-offset:0;border-color:transparent}
+.steps{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.steps b{color:var(--navy);font-weight:500}
+</style>
+<div class="wrap">
+  <header class="hero">
+    <nav class="sitenav" aria-label="Pages">
+      <a href="./">David, Clara &amp; Lily ad</a>
+      <a href="./remote-talent-hub.html">Remote Talent Hub ad</a>
+      <a href="./chatgpt.html" aria-current="page">ChatGPT master prompt</a>
+    </nav>
+    <div class="eyebrow">ChatGPT · Claude · Gemini · Master prompt</div>
+    <h1>Cinematic advert <span>storyline generator</span></h1>
+    <p class="lede">A reusable master prompt that turns any business into a scene-by-scene animated advert script, with characters, dialogue, on-screen text, sound design and AI production notes. Fill in the business details below, copy, and paste into ChatGPT.</p>
+    <div class="steps"><span><b>Problem</b></span>→<span><b>Pressure</b></span>→<span><b>Discovery</b></span>→<span><b>Relief</b></span>→<span><b>Transformation</b></span>→<span><b>Action</b></span></div>
+  </header>
+
+  <main class="single">
+    <section class="part">
+      <div class="part-head">
+        <span class="tag">Step one</span>
+        <h2>Business information</h2>
+        <p>Anything you leave blank stays as a [bracket] so ChatGPT knows to ask you about it.</p>
+      </div>
+      <article class="prompt" id="builder">
+        <div class="prompt-top">
+          <div class="prompt-title"><strong>Your business</strong><small>Fills the Business Information block at the end of the prompt</small></div>
+          <button class="copy" type="button" id="copyFilled">Copy completed prompt</button>
+        </div>
+        <form class="fields" id="bizForm" onsubmit="return false">
+<label class="field" for="f0"><span>Business name</span><input id="f0" type="text" placeholder="Insert name"></label>
+<label class="field" for="f1"><span>Website</span><input id="f1" type="text" placeholder="Insert URL"></label>
+<label class="field" for="f2"><span>Industry</span><input id="f2" type="text" placeholder="Insert industry"></label>
+<label class="field" for="f3"><span>Products or services</span><textarea id="f3" rows="2" placeholder="Describe what the business offers"></textarea></label>
+<label class="field" for="f4"><span>Target audience</span><textarea id="f4" rows="2" placeholder="Describe ideal customers"></textarea></label>
+<label class="field" for="f5"><span>Main customer problem</span><textarea id="f5" rows="2" placeholder="Describe the problem"></textarea></label>
+<label class="field" for="f6"><span>How the business solves it</span><textarea id="f6" rows="2" placeholder="Explain the solution"></textarea></label>
+<label class="field" for="f7"><span>Packages and pricing</span><textarea id="f7" rows="2" placeholder="Insert accurate package details"></textarea></label>
+<label class="field" for="f8"><span>Unique selling point</span><textarea id="f8" rows="2" placeholder="Explain why customers should choose this business"></textarea></label>
+<label class="field" for="f9"><span>Brand colours and visual identity</span><textarea id="f9" rows="2" placeholder="Insert details"></textarea></label>
+<label class="field" for="f10"><span>Advert objective</span><input id="f10" type="text" placeholder="Sales, leads, awareness, bookings, downloads, etc."></label>
+<label class="field" for="f11"><span>Desired call to action</span><input id="f11" type="text" placeholder="Insert CTA"></label>
+<label class="field" for="f12"><span>Desired duration</span><input id="f12" type="text" placeholder="30, 60, 90 seconds, or another duration"></label>
+<label class="field" for="f13"><span>Animation style</span><input id="f13" type="text" placeholder="3D animation, stylised cinematic animation, Pixar-inspired family-friendly aesthetics, realistic animated film, or another style"></label>
+<label class="field" for="f14"><span>Additional requirements</span><textarea id="f14" rows="2" placeholder="Insert any other instructions"></textarea></label>
+        </form>
+      </article>
+    </section>
+
+    <section class="part">
+      <div class="part-head">
+        <span class="tag">Step two</span>
+        <h2>The master prompt</h2>
+        <p>The full prompt as written, with the blank Business Information template at the end.</p>
+      </div>
+      <article class="prompt">
+        <div class="prompt-top">
+          <div class="prompt-title"><strong>Master prompt</strong><small>Cinematic animated advert storyline generator</small></div>
+          <button class="copy" type="button">Copy prompt</button>
+        </div>
+<pre id="master"># MASTER PROMPT: CINEMATIC ANIMATED ADVERT STORYLINE GENERATOR
+
+Act as an award-winning advertising creative director, cinematic storyteller, animation scriptwriter, brand strategist, and direct-response marketing expert.
+
+Your task is to transform a business, product, service, or organisation into a compelling **cinematic animated advertising story** that captures attention, creates an emotional connection, communicates value, and motivates viewers to take action.
+
+The advert must feel like a short animated movie with a meaningful storyline, relatable characters, emotional tension, discovery, and transformation — not a conventional commercial or a boring list of features.
+
+## 1. UNDERSTAND THE BUSINESS
+
+First, analyse the information I provide about the business, including:
+
+- Business name and industry
+- Products or services offered
+- Target audience
+- Problems the audience experiences
+- The emotional frustrations associated with those problems
+- How the business solves those problems
+- Unique selling points and competitive advantages
+- Pricing, packages, or offers
+- Desired customer action
+- Brand identity, colours, and tone of voice
+
+Identify the strongest emotional problem the business solves and build the story around it.
+
+Do not simply advertise the service. Show the audience what life looks like before discovering the business and how things improve afterwards.
+
+If essential information is missing, ask me concise questions before writing the script. Never invent prices, guarantees, testimonials, or business claims.
+
+## 2. CREATE THE STORY CONCEPT
+
+Develop a unique story concept with a strong emotional journey.
+
+Use this storytelling framework as a starting point:
+
+**PROBLEM → PRESSURE → DISCOVERY → RELIEF → TRANSFORMATION → ACTION**
+
+Adapt the framework to suit the business rather than forcing every advert into the same structure.
+
+The opening must immediately capture attention through a relatable problem, an unexpected visual, a surprising situation, or an emotionally powerful moment.
+
+The audience should recognise themselves in the character and think:
+
+&quot;That is exactly what I am experiencing.&quot;
+
+Build curiosity so viewers want to know what happens next.
+
+## 3. CREATE RELATABLE CHARACTERS
+
+Develop two to four believable characters whose situations represent different segments of the target audience.
+
+For each character, establish:
+
+- Name or character identifier
+- Age range and appearance
+- Occupation or business type
+- Main problem
+- Emotional state at the beginning
+- What they want to achieve
+- What prevents them from achieving it
+- How the advertised business changes their situation
+
+Give each character a distinct situation that demonstrates a different benefit of the business.
+
+Avoid making characters feel like actors simply presenting products. They should behave naturally and experience believable problems.
+
+Where appropriate, create contrasting characters to show how the same service can help different people.
+
+## 4. STRUCTURE THE ANIMATED ADVERT
+
+Write a complete scene-by-scene script suitable for a paid social media advertisement.
+
+Default duration: 60–90 seconds.
+
+Default format: Vertical 9:16 for TikTok, Instagram Reels, Facebook Reels, and other mobile-first platforms.
+
+Use approximately 5–8 scenes, depending on the complexity of the story.
+
+For every scene, include:
+
+**SCENE TITLE:** A short, memorable heading.
+
+**DURATION:** Estimated number of seconds.
+
+**VISUAL DESCRIPTION:** Describe precisely what the viewer sees, including the environment, character actions, facial expressions, camera movement, lighting, props, and important visual details.
+
+**CHARACTER ACTION:** Explain what happens in the scene and how the character responds emotionally.
+
+**DIALOGUE OR VOICE-OVER:** Write natural, emotionally engaging narration or dialogue that advances the story.
+
+**ON-SCREEN TEXT:** Include only essential text, such as prices, benefits, notifications, headlines, statistics, or calls to action.
+
+**TRANSITION:** Explain how the scene moves into the next scene.
+
+**SOUND DESIGN:** Suggest music, ambient sounds, and sound effects that strengthen the emotion.
+
+Make the scenes visually connected. Each scene must contribute to the storyline and lead naturally into the next.
+
+## 5. MAKE THE STORY VISUALLY COMPELLING
+
+Use cinematic visual storytelling techniques such as:
+
+- Close-ups of worried expressions, hands, screens, or important objects
+- Wide shots establishing the character&#x27;s environment
+- Over-the-shoulder shots showing the character&#x27;s problem
+- Visual metaphors representing stress, confusion, financial pressure, or freedom
+- Dynamic montages to show progress
+- Split-screen comparisons between the character&#x27;s life before and after
+- Colour, lighting, and camera movement to reflect emotional changes
+- Smooth transitions that communicate the passage of time
+- Satisfying visual payoffs that reward the viewer&#x27;s attention
+
+Do not rely on narration to explain everything. Whenever possible, let the audience understand the problem and solution through the visuals.
+
+The opening should be visually arresting, the middle should sustain curiosity, and the ending should feel satisfying.
+
+## 6. SHOW THE PRODUCT OR SERVICE NATURALLY
+
+Introduce the business as the turning point in the story.
+
+Show the character discovering the brand in a believable way, such as through a phone, website, recommendation, search result, demonstration, or real-world encounter.
+
+Demonstrate how the service works and how it addresses the character&#x27;s specific problems.
+
+If the business has multiple packages, show them at appropriate moments in the story rather than presenting all the packages at once.
+
+For each package, communicate the most relevant benefits using attractive on-screen graphics, animated interface elements, or short visual montages.
+
+Ensure that:
+- All pricing matches the supplied information.
+- All service descriptions are accurate.
+- Important information remains on screen long enough to be read.
+- The voice-over focuses on the story instead of reading every feature aloud.
+- The brand remains recognisable without overwhelming the story.
+
+## 7. CREATE A BELIEVABLE TRANSFORMATION
+
+Show tangible visual evidence of the character&#x27;s improvement.
+
+Do not simply say that the product works. Demonstrate the change through actions, environment, expressions, and results.
+
+For example:
+- A cluttered workspace becomes organised.
+- A stressed business owner begins focusing on customers.
+- An unanswered inbox becomes manageable.
+- An unfinished project becomes a completed project.
+- Confusion becomes clarity.
+- A character who felt stuck begins making progress.
+
+Keep the transformation credible. Do not promise outcomes that the business cannot substantiate.
+
+Use a fast-paced montage when several customers or benefits need to be shown.
+
+## 8. DESIGN A STRONG ENDING
+
+End with a clean, visually memorable branded scene.
+
+Include:
+
+- Business name and logo
+- A concise headline expressing the core value proposition
+- The most important services or benefits
+- Relevant pricing or offers, if supplied
+- Website or other verified contact information
+- One clear call to action
+
+The final voice-over should be short, memorable, and connected to the story&#x27;s emotional message.
+
+The ending must tell viewers exactly what to do next, such as visiting the website, exploring a package, booking a consultation, or getting started.
+
+Avoid cluttering the final frame with too many competing messages.
+
+## 9. PRODUCTION-READY ANIMATION DIRECTION
+
+Write the script so an animation team or AI video creator can produce it.
+
+Prioritise:
+- Consistent character appearance across scenes
+- Consistent clothing, hairstyles, skin tones, and important props
+- Clear spatial continuity
+- Specific and achievable character actions
+- Manageable camera movements
+- Readable text and interface graphics
+- Suitable pacing for the target platform
+- Clear distinctions between narration, dialogue, and on-screen text
+
+Avoid vague descriptions such as &quot;the character looks sad&quot; when you can describe the visual details that communicate sadness.
+
+If AI image and video generation will be used, ensure each scene can be broken into individual shots without losing continuity.
+
+Do not put long, complicated text inside AI-generated imagery. Identify text that should be added during editing instead.
+
+## 10. FINAL OUTPUT FORMAT
+
+Present the result in this order:
+
+1. **Advert Concept:** A compelling title and a brief summary of the story.
+2. **Advert Overview:** Target audience, objective, duration, format, style, core message, and emotional journey.
+3. **Character Profiles:** Detailed descriptions of each main character.
+4. **Complete Scene-by-Scene Script:** Include every required scene element described above.
+5. **Final Brand Screen:** Exact headline, pricing, services, CTA, and closing voice-over.
+6. **Creative Direction:** Guidance on pacing, music, colours, visual continuity, transitions, and emotional tone.
+7. **AI Production Notes:** Identify important character reference images, scene continuity requirements, and shots that should be generated separately.
+8. **Alternative Hooks:** Three different opening concepts that could capture attention in the first three seconds.
+
+## QUALITY STANDARD
+
+The finished advert must feel like a professionally directed short animated film created by a premium creative agency.
+
+It must be emotionally engaging, commercially persuasive, visually imaginative, easy to follow, and appropriate for paid advertising.
+
+Prioritise storytelling over selling, visual evidence over unsupported claims, and emotional connection over generic marketing language.
+
+Avoid clichés, excessive narration, repetitive scenes, unrealistic transformations, and unnecessary exposition.
+
+Every scene must either increase emotional investment, develop the story, demonstrate value, or move the viewer towards action.
+
+## BUSINESS INFORMATION
+
+Use the following information to create the advert:
+
+**Business name:** [Insert name]
+
+**Website:** [Insert URL]
+
+**Industry:** [Insert industry]
+
+**Products or services:** [Describe what the business offers]
+
+**Target audience:** [Describe ideal customers]
+
+**Main customer problem:** [Describe the problem]
+
+**How the business solves it:** [Explain the solution]
+
+**Packages and pricing:** [Insert accurate package details]
+
+**Unique selling point:** [Explain why customers should choose this business]
+
+**Brand colours and visual identity:** [Insert details]
+
+**Advert objective:** [Sales, leads, awareness, bookings, downloads, etc.]
+
+**Desired call to action:** [Insert CTA]
+
+**Desired duration:** [30, 60, 90 seconds, or another duration]
+
+**Animation style:** [3D animation, stylised cinematic animation, Pixar-inspired family-friendly aesthetics, realistic animated film, or another style]
+
+**Additional requirements:** [Insert any other instructions]
+
+Now analyse the business information and create the strongest possible animated advertising storyline. Make the audience feel the problem, experience the discovery, believe in the solution, and understand why taking action matters.
+</pre>
+      </article>
+    </section>
+    <footer>Ad prompt library · ChatGPT master prompt</footer>
+  </main>
+</div>
+<script>
+var FIELDS=[('Business name', 'Insert name'), ('Website', 'Insert URL'), ('Industry', 'Insert industry'), ('Products or services', 'Describe what the business offers'), ('Target audience', 'Describe ideal customers'), ('Main customer problem', 'Describe the problem'), ('How the business solves it', 'Explain the solution'), ('Packages and pricing', 'Insert accurate package details'), ('Unique selling point', 'Explain why customers should choose this business'), ('Brand colours and visual identity', 'Insert details'), ('Advert objective', 'Sales, leads, awareness, bookings, downloads, etc.'), ('Desired call to action', 'Insert CTA'), ('Desired duration', '30, 60, 90 seconds, or another duration'), ('Animation style', '3D animation, stylised cinematic animation, Pixar-inspired family-friendly aesthetics, realistic animated film, or another style'), ('Additional requirements', 'Insert any other instructions')];
+var BASE=document.getElementById('master').textContent.split('## BUSINESS INFORMATION')[0];
+var FINAL='Now analyse the business information and create the strongest possible animated advertising storyline. Make the audience feel the problem, experience the discovery, believe in the solution, and understand why taking action matters.';
+function filled(){
+  var out=BASE+'## BUSINESS INFORMATION\n\nUse the following information to create the advert:\n\n';
+  FIELDS.forEach(function(f,i){var v=document.getElementById('f'+i).value.trim(); out+='**'+f[0]+':** '+(v||'['+f[1]+']')+'\n\n';});
+  return out+FINAL+'\n';
+}
+function flash(btn,label){btn.textContent='Copied';btn.classList.add('done');setTimeout(function(){btn.textContent=label;btn.classList.remove('done');},1800);}
+document.getElementById('copyFilled').addEventListener('click',function(){
+  var b=this,t=filled();
+  try{navigator.clipboard.writeText(t).then(function(){flash(b,'Copy completed prompt')},function(){b.textContent='Copy blocked, use the prompt below';});}catch(e){b.textContent='Copy blocked, use the prompt below';}
+});
+document.querySelectorAll('.prompt').forEach(function(card){
+  var pre=card.querySelector('pre'); if(!pre) return;
+  var btn=card.querySelector('button.copy');
+  btn.addEventListener('click',function(){
+    var fb=function(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected, press Ctrl+C';};
+    try{navigator.clipboard.writeText(pre.textContent).then(function(){flash(btn,'Copy prompt')},fb);}catch(e){fb();}
+  });
+  if(pre.scrollHeight>440){var ex=document.createElement('button');ex.type='button';ex.className='expand';ex.textContent='Show full prompt';ex.addEventListener('click',function(){var o=card.classList.toggle('open');ex.textContent=o?'Collapse':'Show full prompt';});card.appendChild(ex);}
+});
+</script>
+</body>
+</html>
