@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proud to Be Me Works Prompt Library</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a film-production call sheet. Studio-grey ground (the character-sheet backdrop), navy front-door accent, brass highlights. Left rail index on desktop, stacked on phone. */
+:root{
+  --bg:#E9ECEF;          /* studio backdrop grey, cool */
+  --surface:#F7F8F9;
+  --ink:#16202F;
+  --muted:#5A6576;
+  --line:#CDD3DA;
+  --navy:#1F2A44;        /* the front door */
+  --brass:#A77A2B;
+  --code-bg:#FFFFFF;
+  --chip:#DDE3EA;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161D;--surface:#1A2029;--ink:#E7EAEE;--muted:#9AA5B4;--line:#2C3542;
+  --navy:#8FA6D6;--brass:#D6A955;--code-bg:#0E1218;--chip:#252D39;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+
+header.hero{display:grid;gap:18px;padding-bottom:32px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,64px);line-height:1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 span{color:var(--navy)}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+.slate{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.slate b{color:var(--ink);font-weight:500}
+
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;margin-top:36px}
+nav.index{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;display:grid;gap:22px;font-size:14px}
+nav.index h4{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
+nav.index ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+nav.index a{color:var(--ink);text-decoration:none;display:block;padding:3px 0 3px 10px;border-left:2px solid transparent}
+nav.index a:hover,nav.index a:focus-visible{border-left-color:var(--brass);outline:none}
+
+section.part{display:grid;gap:22px;margin-bottom:56px}
+.part-head{display:grid;gap:6px}
+.part-head .tag{font-family:var(--f-mono);font-size:12px;color:var(--brass);letter-spacing:.1em;text-transform:uppercase}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,3.6vw,38px);margin:0;letter-spacing:-.01em}
+.part-head p{margin:0;color:var(--muted);max-width:66ch}
+
+h3.scene{font-family:var(--f-display);font-weight:700;font-size:20px;margin:18px 0 0;display:flex;gap:12px;align-items:baseline}
+h3.scene .n{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--surface);background:var(--navy);padding:3px 8px;border-radius:3px}
+
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.prompt-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.prompt-title{display:grid;gap:2px;min-width:0}
+.prompt-title strong{font-family:var(--f-display);font-weight:700;font-size:17px}
+.prompt-title small{color:var(--muted);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-family:var(--f-mono);font-size:11px;background:var(--chip);color:var(--ink);padding:2px 8px;border-radius:999px}
+button.copy{font-family:var(--f-mono);font-size:12.5px;font-weight:500;border:1.5px solid var(--navy);background:transparent;color:var(--navy);padding:7px 14px;border-radius:4px;cursor:pointer;white-space:nowrap}
+button.copy:hover{background:var(--navy);color:var(--surface)}
+button.copy:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+button.copy.done{background:var(--brass);border-color:var(--brass);color:var(--surface)}
+pre{margin:0;padding:16px;background:var(--code-bg);font-family:var(--f-mono);font-size:12.8px;line-height:1.65;white-space:pre-wrap;word-wrap:break-word;max-height:420px;overflow:auto;color:var(--ink)}
+.prompt.open pre{max-height:none}
+.expand{display:block;width:100%;border:0;border-top:1px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--f-mono);font-size:12px;padding:8px;cursor:pointer}
+.expand:focus-visible{outline:2px solid var(--brass)}
+
+.note{border-left:3px solid var(--brass);padding:10px 14px;background:var(--surface);color:var(--muted);font-size:14px;max-width:72ch}
+.note b{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13px;font-family:var(--f-mono)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:24px}
+  nav.index{position:static;grid-template-columns:1fr 1fr;gap:16px}
+}
+@media (max-width:460px){ nav.index{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Google Flow · Veo 3.1 · Prompt library</div>
+    <h1>The David, Clara &amp; Lily <span>ad prompts</span></h1>
+    <p class="lede">Every prompt used for the Proud to Be Me Works virtual-assistant ad: the three-panel character sheet layout, the five cast sheets, and the shot prompts for Scenes 1 to 5. Tap Copy on any card and paste it straight into your generator.</p>
+    <div class="slate">
+      <span>Setting <b>St Albans, Herts · 1930s semi</b></span>
+      <span>Light <b>Overcast October afternoon</b></span>
+      <span>Voices <b>Southern English accent</b></span>
+      <span>Clip <b>8 s per shot</b></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="index" aria-label="Contents">
+      <div>
+        <h4>Character sheets</h4>
+        <ul>
+          <li><a href="#layout">Three-panel layout</a></li>
+          <li><a href="#david">David</a></li>
+          <li><a href="#clara">Clara</a></li>
+          <li><a href="#adam">Adam</a></li>
+          <li><a href="#jennifer">Jennifer</a></li>
+          <li><a href="#lily">Baby Lily</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Scenes</h4>
+        <ul>
+          <li><a href="#scene1">1 · Arrival at the door</a></li>
+          <li><a href="#scene2">2 · Welcome in the hallway</a></li>
+          <li><a href="#scene3">3 · Settling in</a></li>
+          <li><a href="#scene4">4 · Calls on the patio</a></li>
+          <li><a href="#scene5">5 · Adam comes back</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <!-- CHARACTER SHEETS -->
+      <section class="part" id="sheets">
+        <div class="part-head">
+          <span class="tag">Part one</span>
+          <h2>Character sheets</h2>
+          <p>Three panels side by side on a grey studio backdrop: a head-and-shoulders close-up, the full body from the front with the head cropped out, and the full body from the back. Generate each at 16:9, then upload it as an Ingredient whenever that character appears.</p>
+        </div>
+
+        <article class="prompt" id="layout">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Three-panel layout (reusable template)</strong><small>Swap the bracketed parts for any new character</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Three-panel character reference sheet, side by side. Background in all three panels: seamless plain medium-grey studio backdrop, cool neutral grey (around #8E9196), smooth matte paper sweep, very subtle soft vignette slightly darker at the edges and lighter behind the subject, faint soft floor shadow at the feet, no texture, no props, no horizon line, no gradient colors. Soft diffused frontal studio lighting, even exposure, photorealistic, consistent character across all panels.
+
+Panel 1 (left): tight close-up portrait from chest up, facing camera — [hair], [facial hair], [accessories], [expression], same grey backdrop softly out of focus.
+
+Panel 2 (center): full-body front view, standing straight, arms relaxed at sides, head cropped out at the neck (headless, frame starts at the collarbone), showing outfit only — [top], [bottoms], [shoes], standing on the same grey seamless backdrop.
+
+Panel 3 (right): full-body back view, same pose, head included, showing hair and accessories from behind, same outfit, same grey backdrop.
+
+Fashion lookbook turnaround sheet, sharp focus, true-to-life colors, thin white dividers between panels, no text, no logos.</pre>
+        </article>
+
+        <p class="note"><b>If the middle panel keeps a head:</b> add "neck-down crop, no face visible in the center panel". If the backdrop comes out warm, add "warm tones, beige, white background, textured wall, outdoor" to the negative prompt.</p>
+
+        <article class="prompt" id="david">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>David</strong><small>New dad, homeowner · 33</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Character reference sheet, 16:9, three equal vertical panels side by side separated by thin light-grey dividers, seamless mid-grey studio backdrop, soft even diffused studio lighting, photorealistic, sharp focus, neutral expression, no text, no logos.
+Subject: David, a white British man aged 33, about 5 ft 11, medium build. Fair skin with light freckles across the nose, blue-grey eyes, faint tiredness under the eyes like a new father. Short light-brown hair, slightly tousled on top and shorter at the sides. Light-brown three-day stubble.
+Wardrobe: navy-blue crew-neck cotton knit jumper, sleeves pushed slightly up the forearms; stone-beige slim chinos; dark-grey felt moccasin slippers. Plain silver wedding band on left ring finger. No watch.
+Left panel: tight head-and-shoulders portrait facing camera straight on, cropped at the upper chest, showing face, hair, stubble and jumper neckline in detail.
+Centre panel: full body standing front view, arms relaxed at sides, framed from the chin down to the slippers.
+Right panel: full body standing back view including the back of the head, arms relaxed, showing the back of the jumper, chinos and slippers.</pre>
+        </article>
+
+        <article class="prompt" id="clara">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Clara</strong><small>New mum, 4 weeks postpartum · 31</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Character reference sheet, 16:9, three equal vertical panels side by side separated by thin light-grey dividers, seamless mid-grey studio backdrop, soft even diffused studio lighting, photorealistic, sharp focus, gentle neutral expression, no text, no logos.
+Subject: Clara, a white British woman aged 31, about 5 ft 6, soft slim postpartum build. Fair rosy skin, natural no-makeup look, green-hazel eyes. Honey-blonde shoulder-length hair tied in a loose low bun with a few soft strands framing her face.
+Wardrobe: oversized oatmeal cable-knit cardigan worn open over a plain white cotton round-neck T-shirt; light-grey soft jersey lounge trousers; cream sheepskin-lined slippers. Thin gold wedding band and a small solitaire engagement ring on left hand. No other jewellery.
+Left panel: tight head-and-shoulders portrait facing camera straight on, cropped at the upper chest, showing face, loose bun and cardigan collar.
+Centre panel: full body standing front view, arms relaxed at sides, framed from the chin down to the slippers.
+Right panel: full body standing back view including the back of the head and bun, arms relaxed.</pre>
+        </article>
+
+        <article class="prompt" id="adam">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Adam</strong><small>Photographer, overwhelmed · 32</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Character reference sheet, 16:9, three equal vertical panels side by side separated by thin light-grey dividers, seamless mid-grey studio backdrop, soft even diffused studio lighting, photorealistic, sharp focus, neutral expression, no text, no logos.
+Subject: Adam, a Black British man aged 32, about 6 ft, slim athletic build. Rich chocolate-brown skin, dark brown eyes. Short black tightly coiled hair with a low taper fade and a crisp hairline. Neatly trimmed short full black beard with sharp line-up.
+Wardrobe: olive-green cotton overshirt worn open over a plain white crew-neck T-shirt; black slim-fit jeans; clean white minimal leather trainers. Silver-faced watch with black leather strap on left wrist. Plain gold wedding band on left ring finger. Holding nothing.
+Left panel: tight head-and-shoulders portrait facing camera straight on, cropped at the upper chest, showing face, hair, beard and T-shirt neckline.
+Centre panel: full body standing front view, arms relaxed at sides, framed from the chin down to the trainers.
+Right panel: full body standing back view including the back of the head, arms relaxed.</pre>
+        </article>
+
+        <article class="prompt" id="jennifer">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Jennifer</strong><small>Adam's wife · 30</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Character reference sheet, 16:9, three equal vertical panels side by side separated by thin light-grey dividers, seamless mid-grey studio backdrop, soft even diffused studio lighting, photorealistic, sharp focus, warm neutral expression, no text, no logos.
+Subject: Jennifer, a Black British woman aged 30, about 5 ft 5, slim build. Warm chocolate-brown skin, dark brown eyes, soft natural makeup with nude-brown lipstick. Long dark-brown knotless box braids reaching mid-back, the top half gathered into a neat bun on the crown and the rest hanging down.
+Wardrobe: rust-terracotta ribbed crew-neck jumper; light-blue straight-leg jeans; white leather trainers; small tan leather crossbody bag worn across the body. Small gold hoop earrings and a gold wedding band on left ring finger.
+Left panel: tight head-and-shoulders portrait facing camera straight on, cropped at the upper chest, showing face, braids, bun and earrings.
+Centre panel: full body standing front view, arms relaxed at sides, framed from the chin down to the trainers.
+Right panel: full body standing back view including the back of the head showing the bun and braids, arms relaxed, bag strap visible.</pre>
+        </article>
+
+        <article class="prompt" id="lily">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Baby Lily</strong><small>4-week-old newborn · panels adapted: face, top-down, side profile</small></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Character reference sheet, 16:9, three equal vertical panels side by side separated by thin light-grey dividers, soft mid-grey background, soft even diffused lighting, photorealistic, sharp focus, no text, no logos.
+Subject: Lily, a 4-week-old white British newborn baby girl. Fair pinkish skin, chubby cheeks, tiny button nose, a few fine wisps of light-brown hair, sleepy half-closed eyes, peaceful expression.
+Wardrobe: white long-sleeved cotton sleepsuit with tiny pale-pink dots, swaddled snugly in a soft cream cellular cotton blanket with a pale-pink satin edge. No hat, no dummy, no jewellery.
+Left panel: close-up of the baby's face and head, swaddle edge visible under the chin.
+Centre panel: top-down view of the whole swaddled baby lying on her back on a plain grey cushion, face up, arms tucked in.
+Right panel: side profile of the swaddled baby lying on her back, showing the curve of her head, cheek and the blanket wrap.</pre>
+        </article>
+      </section>
+
+      <!-- SCENES -->
+      <section class="part" id="scenes">
+        <div class="part-head">
+          <span class="tag">Part two</span>
+          <h2>Scenes 1 to 5</h2>
+          <p>Twelve 8-second shots. Add the listed Ingredients in Flow (up to three per shot), paste the prompt, and generate two to four takes. Switch "16:9" to "vertical 9:16" if you're cutting for Reels or TikTok.</p>
+        </div>
+
+        <h3 class="scene" id="scene1"><span class="n">Scene 1</span>Arrival at the front door</h3>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 1 · Knock while Adam types</strong>
+              <div class="chips"><span class="chip">Jennifer</span><span class="chip">Adam</span><span class="chip">L2 Front exterior</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: front garden path of a 1930s red-brick and white pebbledash semi-detached house in a quiet St Albans street, England, mid-October, overcast soft daylight, fallen gold leaves on the path. Deep navy-blue front door with frosted glass panel and chrome letterbox under a small tiled porch.
+Characters: Jennifer (Black British woman, 30, chocolate-brown skin, long dark-brown braids half-up in a bun, small gold hoops, rust ribbed jumper, light-blue jeans, white trainers, tan crossbody bag) carrying a pale sage-green gift bag with white tissue paper. Adam (Black British man, 32, chocolate-brown skin, short coiled black hair with taper fade, neatly trimmed beard, olive-green overshirt over white T-shirt, black jeans, white trainers) a few steps behind her, head down, typing fast with both thumbs on a matte black phone.
+Camera: medium-wide shot from the pavement side of the path, slow gentle push-in toward the door.
+Action: 0-3s Jennifer walks up the tiled path and stops at the door; Adam follows slowly, eyes locked on his phone. 3-5s Jennifer knocks three times on the door with her knuckles, then glances back at Adam with a raised eyebrow. 5-8s Adam keeps typing without looking up.
+Dialogue: Jennifer (warm, teasing, Southern English British accent): "Adam, put the phone away for two minutes, please." Adam (distracted, still typing, Southern English British accent): "Two seconds, babe, I'm just replying to a client."
+Audio: three clear knuckle knocks on the door, footsteps on tiles, quiet suburban street ambience, distant birdsong. No music.
+No subtitles, no on-screen text, no logos, phone screen not visible.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 2 · Adam knocks</strong>
+              <div class="chips"><span class="chip">Adam</span><span class="chip">Jennifer</span><span class="chip">L2 Front exterior</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9, continuing directly from the previous shot. Location: under the small tiled porch of a 1930s semi-detached house in St Albans, England, overcast October daylight, deep navy-blue front door with frosted glass panel, chrome letterbox and coir doormat.
+Characters: Adam (Black British man, 32, chocolate-brown skin, short coiled black hair with taper fade, trimmed beard, olive-green overshirt over white T-shirt, black jeans, white trainers) holding a matte black phone. Jennifer (Black British woman, 30, chocolate-brown skin, long dark-brown braids half-up in a bun, gold hoops, rust ribbed jumper, light-blue jeans, tan crossbody bag) holding a sage-green gift bag.
+Camera: medium two-shot from the side, both faces visible in profile-three-quarter, door on the right of frame.
+Action: 0-3s Adam taps send on his phone, steps up beside Jennifer and knocks firmly twice on the door with his free hand, phone still in his other hand. 3-6s Jennifer turns to him with a playful exaggerated sigh and a smile. 6-8s Muffled footsteps approach from inside; both face the door.
+Dialogue: Jennifer (playful, mock-exasperated, Southern English British accent): "Oh, now you knock."
+Audio: two firm knocks, phone send swoosh, muffled footsteps from inside the house, quiet street ambience. No music.
+No subtitles, no on-screen text, no logos, phone screen not visible.</pre>
+        </article>
+
+        <h3 class="scene" id="scene2"><span class="n">Scene 2</span>Welcome in the hallway</h3>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 3 · David opens the door</strong>
+              <div class="chips"><span class="chip">David</span><span class="chip">Clara</span><span class="chip">L3 Hallway</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: inside the hallway of a 1930s British semi-detached house, camera facing the deep navy-blue front door, grey-and-white geometric floor tiles, staircase with white spindles and oak handrail on the left, oak console table and round brass mirror on the right, soft overcast daylight through the door glass.
+Characters: David (white British man, 33, short tousled light-brown hair, light stubble, navy crew-neck jumper, stone chinos, grey felt slippers). Clara (white British woman, 31, honey-blonde hair in a loose low bun, oatmeal cable-knit cardigan over white T-shirt, light-grey lounge trousers, cream slippers) cradling baby Lily (4-week-old newborn swaddled in a cream cellular blanket with a pale-pink edge) in her arms.
+Camera: from behind David's shoulder, medium shot, the door opening toward camera.
+Action: 0-2s David walks into frame and pulls the front door open wide, revealing Jennifer and Adam on the doorstep in soft daylight. 2-4s David breaks into a big grin and spreads his arms. 4-6s Clara steps into the hallway behind him, gently rocking the baby, peering past his shoulder. 6-8s David half-turns back to Clara with a smile.
+Dialogue: David (delighted, Southern English British accent): "Jen! Adam! Come in, come in!" Clara (soft, curious, Southern English British accent): "Who is it, love?" David: "It's Adam and Jen."
+Audio: door latch click, door opening, gentle street ambience flowing in. No music.
+No subtitles, no on-screen text, no logos.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 4 · Meeting baby Lily</strong>
+              <div class="chips"><span class="chip">Clara</span><span class="chip">Jennifer</span><span class="chip">Adam</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: hallway of a 1930s British semi-detached house just inside the open navy front door, grey-and-white geometric tiles, white staircase with oak handrail, warm off-white walls, soft daylight.
+Characters: Jennifer (Black British woman, 30, chocolate-brown skin, long dark-brown braids half-up in a bun, gold hoops, rust ribbed jumper, light-blue jeans, tan crossbody bag, holding a sage-green gift bag). Clara (white British woman, 31, honey-blonde loose low bun, oatmeal cable-knit cardigan, white T-shirt) cradling baby Lily (4-week-old newborn swaddled in a cream cellular blanket with pale-pink edge, sleeping peacefully). Adam (Black British man, 32, chocolate-brown skin, coiled black hair with taper fade, trimmed beard, olive-green overshirt, white T-shirt, black jeans) holding a matte black phone. David (white British man, navy jumper) in soft focus closing the door.
+Camera: medium shot, slow arc around Jennifer and Clara, Adam in the background.
+Action: 0-3s Jennifer steps in, presses a hand to her chest and leans in to look at the baby, eyes shining. 3-5s Clara tilts the baby toward her, beaming. 5-7s Behind them Adam glances up from his phone, gives a quick polite smile, then looks straight back down at the screen, thumbs moving. 7-8s David closes the door and claps Adam lightly on the shoulder, guiding him further in.
+Dialogue: Jennifer (gushing, soft, Southern English British accent): "Oh, Clara, she's absolutely gorgeous!" Clara (proud, quiet): "Thank you. This is Lily." Adam (brief, distracted): "Congratulations, both of you."
+Audio: door closing softly, a tiny newborn coo, phone vibration buzz. No music.
+No subtitles, no on-screen text, no logos, phone screen not visible.</pre>
+        </article>
+
+        <h3 class="scene" id="scene3"><span class="n">Scene 3</span>Settling in the family room</h3>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 5 · Everyone sits down</strong>
+              <div class="chips"><span class="chip">L4 Family room</span><span class="chip">David</span><span class="chip">Jennifer</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: bright open-plan family room in a 1930s British semi-detached house rear extension, light oak floor, sage-green TV wall with a switched-off wall-mounted TV over a floating oak media unit, oatmeal L-shaped sofa with mustard and sage cushions, rectangular oak coffee table on a cream-and-grey rug holding two open plain brown pizza boxes (margherita and pepperoni) and four speckled cream mugs of milky tea, white French doors with sage curtains on the north wall showing the garden, white shaker kitchen behind, overcast October daylight.
+Characters and fixed positions: David (white British man, 33, tousled light-brown hair, stubble, navy jumper, stone chinos) and Clara (white British woman, 31, honey-blonde loose bun, oatmeal cardigan, white T-shirt, grey lounge trousers) holding sleeping baby Lily (newborn swaddled in a cream blanket with pale-pink edge) sit on the long sofa section facing the TV. Jennifer (Black British woman, 30, long braids half-up in a bun, gold hoops, rust jumper, light-blue jeans) and Adam (Black British man, 32, taper fade, trimmed beard, olive overshirt, white T-shirt, black jeans) sit on the short return section facing the French doors. Sage gift bag on the floor by Jennifer.
+Camera: wide establishing shot from the kitchen side, all four visible, slow drift right.
+Action: 0-3s David gestures toward the pizza while sitting down beside Clara. 3-5s Jennifer settles in, picks up a mug and turns warmly to Clara. Adam sits beside Jennifer, still scrolling his phone. 5-8s Clara looks down lovingly at the baby while answering.
+Dialogue: David (relaxed, friendly, Southern English British accent): "Sit down, sit down. Pizza's just arrived, help yourselves." Jennifer (warm): "So how are you both holding up?" Clara (tired but happy): "Tired, but she's worth every second."
+Audio: sofa cushions settling, mugs clinking, soft room tone. No music.
+No subtitles, no on-screen text, no logos, phone screen not visible.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 6 · Adam takes the call outside</strong>
+              <div class="chips"><span class="chip">Adam</span><span class="chip">L4 Family room</span><span class="chip">L5 Patio</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: open-plan family room of a 1930s British semi, oatmeal L-shaped sofa, oak coffee table with pizza boxes and mugs, white uPVC French doors with sage linen curtains leading to a grey sandstone patio and lawn, overcast October daylight.
+Characters: Adam (Black British man, 32, chocolate-brown skin, short coiled black hair with taper fade, trimmed beard, olive-green overshirt over white T-shirt, black jeans, white trainers) seated on the short return sofa beside Jennifer (Black British woman, 30, long braids half-up in a bun, rust jumper). David and Clara with the baby soft-focus on the long sofa.
+Camera: medium shot on Adam, then pans to follow him to the French doors.
+Action: 0-2s Adam's matte black phone rings loudly in his hand; he glances at the screen and grimaces. 2-4s He stands up, raising an apologetic hand to the group. 4-7s He walks briskly to the French doors, opens one door and steps out onto the patio. 7-8s He pulls the door almost closed behind him and lifts the phone to his ear.
+Dialogue: Adam (apologetic, rushed, Southern English British accent): "Sorry, I've got to take this."
+Audio: generic phone ringtone, French door handle and door opening, outdoor birdsong rushing in briefly. No music.
+No subtitles, no on-screen text, no logos, phone screen not readable.</pre>
+        </article>
+
+        <h3 class="scene" id="scene4"><span class="n">Scene 4</span>Calls on the patio</h3>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 7 · First client call</strong>
+              <div class="chips"><span class="chip">Adam</span><span class="chip">L5 Patio</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: grey Indian sandstone patio behind a 1930s red-brick semi-detached house in St Albans, England, white French doors behind him, black bistro table and chairs, terracotta pots of lavender, lawn with autumn leaves, brown close-board fence, neighbouring slate roofs and yellowing birch trees, overcast grey October sky.
+Character: Adam (Black British man, 32, chocolate-brown skin, short coiled black hair with taper fade, trimmed beard, olive-green overshirt over white T-shirt, black jeans, white trainers) holding a matte black phone to his right ear.
+Camera: medium shot, slightly handheld, Adam pacing slowly left to right across the patio.
+Action: 0-8s Adam paces, free hand gesturing confidently, nodding as he speaks, professional and polite but slightly stretched.
+Dialogue: Adam (professional, upbeat, Southern English British accent): "Yes, Saturday's confirmed. I'll cover the whole event. Put the booking through and I'll reply to your messages shortly."
+Audio: outdoor garden ambience, light breeze, distant birds, faint distant traffic. Caller's voice not audible. No music.
+No subtitles, no on-screen text, no logos.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 8 · Second call straight away</strong>
+              <div class="chips"><span class="chip">Adam</span><span class="chip">L5 Patio</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9, continuing from the previous shot. Location: same grey sandstone patio behind a 1930s British semi, white French doors behind, lawn and fence, overcast October light.
+Character: Adam (Black British man, 32, chocolate-brown skin, coiled black hair with taper fade, trimmed beard, olive-green overshirt, white T-shirt, black jeans) with a matte black phone.
+Camera: medium close-up on Adam's face and phone.
+Action: 0-2s Adam lowers the phone and ends the call, exhaling. 2-3s Immediately the phone pings with three quick message notifications and he glances at it, frowning. 3-4s It starts ringing again; he closes his eyes for a beat, then answers. 4-8s He speaks, rubbing his forehead with his free hand.
+Dialogue: Adam (forcing a bright tone, Southern English British accent): "Hello, Adam speaking. Yes, the corporate shoot next week. Can I check my diary and come straight back to you?"
+Audio: notification pings, ringtone, garden ambience. Caller not audible. No music.
+No subtitles, no on-screen text, no logos, phone screen not readable.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 9 · Jennifer calls him in</strong>
+              <div class="chips"><span class="chip">Jennifer</span><span class="chip">Adam</span><span class="chip">L5 Patio</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: the white French doors between the family room and the grey sandstone patio of a 1930s British semi, sage curtains inside, lawn and fence outside, overcast October light.
+Characters: Jennifer (Black British woman, 30, chocolate-brown skin, long dark-brown braids half-up in a bun, gold hoops, rust ribbed jumper, light-blue jeans) inside at the doorway. Adam (Black British man, 32, coiled black hair with taper fade, trimmed beard, olive-green overshirt, white T-shirt, black jeans) outside on the patio with the matte black phone at his ear.
+Camera: over Jennifer's shoulder from inside, Adam in the background on the patio, rack focus from Jennifer to Adam.
+Action: 0-2s Jennifer opens one French door and leans out. 2-4s She calls to him, half smiling, half fed up. 4-6s Adam turns, holds up one finger to say "one minute", phone still at his ear. 6-8s He turns away again, continuing the call, as the phone pings again; Jennifer shakes her head and goes back inside.
+Dialogue: Jennifer (calling, Southern English British accent): "Adam! The food's getting cold!" Adam (to Jennifer, then back to the caller): "Coming, babe! Sorry, sorry, go on."
+Audio: door opening, outdoor ambience, notification ping. No music.
+No subtitles, no on-screen text, no logos.</pre>
+        </article>
+
+        <h3 class="scene" id="scene5"><span class="n">Scene 5</span>Adam comes back overwhelmed</h3>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 10 · Adam slumps on the sofa</strong>
+              <div class="chips"><span class="chip">Adam</span><span class="chip">Jennifer</span><span class="chip">L4 Family room</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: open-plan family room of a 1930s British semi, oatmeal L-shaped sofa with mustard and sage cushions, oak coffee table with open pizza boxes and speckled cream mugs, white French doors behind, overcast October daylight.
+Characters: Adam (Black British man, 32, chocolate-brown skin, coiled black hair with taper fade, trimmed beard, olive-green overshirt over white T-shirt, black jeans, white trainers) holding a matte black phone. Jennifer (Black British woman, 30, long dark-brown braids half-up in a bun, gold hoops, rust ribbed jumper, light-blue jeans) on the short return sofa section. David and Clara holding baby Lily soft-focus on the long sofa.
+Camera: medium two-shot facing the return sofa from the TV side.
+Action: 0-2s Adam walks in through the French doors and closes them. 2-4s He drops heavily onto the return sofa next to Jennifer, head tipping back, a long tired exhale. 4-5s The phone in his hand buzzes again; he looks at it and lets his hand fall to his lap. 5-8s Jennifer touches his arm with concern; he shakes his head.
+Dialogue: Jennifer (gentle, concerned, Southern English British accent): "You alright?" Adam (flat, worn out): "Not really."
+Audio: door closing, sofa cushion thump, long exhale, phone vibration buzz. No music.
+No subtitles, no on-screen text, no logos, phone screen not readable.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 11 · Clara takes the baby upstairs</strong>
+              <div class="chips"><span class="chip">Clara</span><span class="chip">Baby Lily</span><span class="chip">L4 Family room</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: open-plan family room of a 1930s British semi, oatmeal L-shaped sofa, oak coffee table with pizza boxes and mugs, wide open doorway in the south wall leading to the hallway and stairs, overcast October daylight.
+Characters: Clara (white British woman, 31, honey-blonde hair in a loose low bun, oatmeal cable-knit cardigan over white T-shirt, light-grey lounge trousers, cream slippers) holding baby Lily (4-week-old newborn, fast asleep, swaddled in a cream cellular blanket with pale-pink edge). David (white British man, 33, navy jumper, stone chinos) beside her on the long sofa. Adam and Jennifer on the return section, soft focus.
+Camera: medium shot following Clara from the sofa to the hall doorway.
+Action: 0-2s Clara looks down at the sleeping baby and smiles. 2-4s She rises carefully from the long sofa, holding the baby close. 4-6s She whispers her line to the group. 6-8s She walks out through the doorway into the hallway and out of frame; David watches her go fondly.
+Dialogue: Clara (whispering softly, Southern English British accent): "She's fallen asleep. I'll just pop her down upstairs."
+Audio: soft footsteps, quiet room tone. No music.
+No subtitles, no on-screen text, no logos.</pre>
+        </article>
+
+        <article class="prompt">
+          <div class="prompt-top">
+            <div class="prompt-title"><strong>Shot 12 · Clara asks what's going on</strong>
+              <div class="chips"><span class="chip">Clara</span><span class="chip">Adam</span><span class="chip">L4 Family room</span></div></div>
+            <button class="copy" type="button">Copy prompt</button>
+          </div>
+<pre>Photorealistic cinematic 8-second shot, 16:9. Location: open-plan family room of a 1930s British semi, oatmeal L-shaped sofa, oak coffee table with pizza boxes and speckled cream mugs, sage-green TV wall, overcast October daylight.
+Characters: Clara (white British woman, 31, honey-blonde loose low bun, oatmeal cable-knit cardigan, white T-shirt, grey lounge trousers), now WITHOUT the baby. David (white British man, 33, tousled light-brown hair, navy jumper) on the long sofa. Adam (Black British man, 32, taper fade, trimmed beard, olive overshirt, white T-shirt, black jeans) on the return section holding his matte black phone, Jennifer (Black British woman, 30, braids half-up in a bun, rust jumper) beside him.
+Camera: starts wide as Clara enters, then cuts to a medium shot of Clara seated.
+Action: 0-2s Clara walks back in through the hall doorway empty-handed and sits beside David. 2-3s She tucks her feet up, picks up her mug and looks straight at Adam with a friendly but direct expression. 3-8s Adam looks up from his phone, caught out.
+Dialogue: Clara (kind but direct, Southern English British accent): "Right. Adam, what's going on? You've been glued to that phone since you walked in."
+Audio: footsteps, sofa settling, mug lifted. No music.
+No subtitles, no on-screen text, no logos, phone screen not readable.</pre>
+        </article>
+      </section>
+
+      <footer>Proud to Be Me Works · proudtobemeworks.com · VA ad production pack</footer>
+    </main>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.prompt').forEach(function(card){
+  var pre = card.querySelector('pre');
+  var btn = card.querySelector('button.copy');
+  btn.addEventListener('click', function(){
+    var text = pre.textContent;
+    var ok = function(){ btn.textContent='Copied'; btn.classList.add('done'); setTimeout(function(){btn.textContent='Copy prompt';btn.classList.remove('done');},1800); };
+    var fallback = function(){
+      var r=document.createRange(); r.selectNodeContents(pre);
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent='Selected, press Ctrl+C';
+      setTimeout(function(){btn.textContent='Copy prompt';},2500);
+    };
+    try{ navigator.clipboard.writeText(text).then(ok, fallback); }catch(e){ fallback(); }
+  });
+  if (pre.scrollHeight > 440){
+    var ex=document.createElement('button'); ex.type='button'; ex.className='expand'; ex.textContent='Show full prompt';
+    ex.addEventListener('click',function(){ var o=card.classList.toggle('open'); ex.textContent=o?'Collapse':'Show full prompt'; });
+    card.appendChild(ex);
+  }
+});
+</script>
+</body>
+</html>
